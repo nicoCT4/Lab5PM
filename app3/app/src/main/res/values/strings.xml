@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BasicStateCodelab</string>
+    <string name="compose">Jetpack Compose</string>
+</resources>
