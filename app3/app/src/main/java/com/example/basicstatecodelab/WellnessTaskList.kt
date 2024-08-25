@@ -15,28 +15,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun WellnessTaskItem(
-    taskName: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    onClose: () -> Unit,
+fun WellnessTasksList(
+    list: List<WellnessTask>,
+    onCheckedTask: (WellnessTask, Boolean) -> Unit,
+    onCloseTask: (WellnessTask) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier, verticalAlignment = Alignment.CenterVertically
+    LazyColumn(
+        modifier = modifier
     ) {
-        Text(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp),
-            text = taskName
-        )
-        Checkbox(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
-        IconButton(onClick = onClose) {
-            Icon(Icons.Filled.Close, contentDescription = "Close")
+        items(
+            items = list,
+            key = { task -> task.id }
+        ) { task ->
+            WellnessTaskItem(
+                taskName = task.label,
+                checked = task.checked,
+                onCheckedChange = { checked -> onCheckedTask(task, checked) },
+                onClose = { onCloseTask(task) }
+            )
         }
     }
 }
