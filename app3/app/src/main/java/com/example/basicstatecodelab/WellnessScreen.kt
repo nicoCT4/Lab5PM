@@ -12,30 +12,33 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
+import androidx.lifecycle.viewmodel.compose.viewModel
+
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun WellnessTaskItem(
-    taskName: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    onClose: () -> Unit,
-    modifier: Modifier = Modifier
+fun WellnessScreen(
+    modifier: Modifier = Modifier,
+    wellnessViewModel: WellnessViewModel = viewModel()
 ) {
-    Row(
-        modifier = modifier, verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp),
-            text = taskName
+    Column(modifier = modifier) {
+        StatefulCounter()
+
+        WellnessTasksList(
+            list = wellnessViewModel.tasks,
+            onCheckedTask = { task, checked ->
+                wellnessViewModel.changeTaskChecked(task, checked)
+            },
+            onCloseTask = { task ->
+                wellnessViewModel.remove(task)
+            }
         )
-        Checkbox(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
-        IconButton(onClick = onClose) {
-            Icon(Icons.Filled.Close, contentDescription = "Close")
-        }
     }
 }
